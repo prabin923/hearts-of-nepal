@@ -1,19 +1,28 @@
+import Breadcrumb from "../components/breadcrumb";
+import { SectionBlock } from "../components/section-block";
+
+export const metadata = {
+  title: "Get involved",
+};
+
 export default function GetInvolvedPage() {
   return (
-    <main className="page-shell">
+    <main>
       <section className="section">
-        <div className="content-container">
-          <nav className="breadcrumb" aria-label="Breadcrumb">
-            <a href="/">Home</a>
-            <span className="breadcrumb-sep">/</span>
-            <span>Get Involved</span>
-          </nav>
-          <h1 className="section-heading">Get Involved</h1>
-          <p className="section-copy">
-            Join us as a donor, volunteer, or implementation partner.
-          </p>
+        <div className="container page-content">
+          <Breadcrumb
+            variant="page"
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Get involved" },
+            ]}
+          />
+          <SectionBlock
+            title="Get involved"
+            description="Join us as a donor, volunteer, or implementation partner. We respond to every inquiry within a few business days."
+          />
 
-          <form className="contact-form mt-7">
+          <form className="contact-form">
             <div className="form-grid">
               <label>
                 Full name
@@ -25,19 +34,26 @@ export default function GetInvolvedPage() {
               </label>
               <label>
                 Phone
-                <input className="field-input" type="tel" placeholder="+977..." />
+                <input className="field-input" type="tel" placeholder="+977 …" />
               </label>
               <label>
                 Interest area
-                <input className="field-input" type="text" placeholder="Meals, scholarship, etc." />
+                <input
+                  className="field-input"
+                  type="text"
+                  placeholder="Meals, scholarship, empowerment…"
+                />
               </label>
             </div>
             <label className="mt-4 block">
               Message
-              <textarea className="field-input field-textarea" placeholder="Tell us how you'd like to contribute." />
+              <textarea
+                className="field-input field-textarea"
+                placeholder="Tell us how you would like to contribute."
+              />
             </label>
-            <button type="button" className="btn btn-primary mt-5">
-              Submit interest
+            <button type="button" className="btn btn--primary mt-5">
+              Send message
             </button>
           </form>
         </div>

@@ -1,658 +1,342 @@
- "use client";
+import Link from "next/link";
+import ImageSlider from "./components/image-slider";
+import { SectionBlock } from "./components/section-block";
 
-import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+const slides = [
+  {
+    src: "/assets/gallery-1.jpg",
+    alt: "Community gathering in Nepal",
+    caption: "Community-led programs in Sindhupalchowk",
+  },
+  {
+    src: "/assets/midday-1.jpg",
+    alt: "Students at a midday meal service",
+    caption: "School nutrition supporting attendance",
+  },
+  {
+    src: "/assets/education-1.jpg",
+    alt: "Students receiving education support",
+    caption: "Scholarships and tuition assistance",
+  },
+  {
+    src: "/assets/financial-1.jpg",
+    alt: "Women in a savings group meeting",
+    caption: "Women-led savings and livelihood groups",
+  },
+  {
+    src: "/assets/gallery-extra-1.jpg",
+    alt: "Field program activity",
+    caption: "Partnerships with schools and local leaders",
+  },
+  {
+    src: "/assets/gallery-extra-2.jpg",
+    alt: "Community program event",
+    caption: "Grassroots engagement across program areas",
+  },
+  {
+    src: "/assets/gallery-extra-3.jpg",
+    alt: "Program participants",
+    caption: "Integrated education and nutrition work",
+  },
+];
 
-export default function Home() {
-  const pageRef = useRef<HTMLElement | null>(null);
-  const slides = [
-    {
-      src: "/assets/gallery-1.jpg",
-      alt: "Heart of Nepal community gathering",
-      caption: "Community-led programs with measurable impact",
-    },
-    {
-      src: "/assets/midday-1.jpg",
-      alt: "Students receiving midday meals",
-      caption: "Midday meals improving attendance and concentration",
-    },
-    {
-      src: "/assets/education-1.jpg",
-      alt: "Scholarship support for students",
-      caption: "Scholarships that unlock long-term education outcomes",
-    },
-    {
-      src: "/assets/financial-1.jpg",
-      alt: "Women empowerment training in Nepal",
-      caption: "Women empowerment creating sustainable local leadership",
-    },
-    {
-      src: "/assets/gallery-extra-1.jpg",
-      alt: "Community activity in Nepal",
-      caption: "Field coordination with local partners and schools",
-    },
-    {
-      src: "/assets/gallery-extra-2.jpg",
-      alt: "Community program event",
-      caption: "Grassroots engagement across target communities",
-    },
-    {
-      src: "/assets/gallery-extra-3.jpg",
-      alt: "Program impact snapshot",
-      caption: "Integrated education and nutrition interventions",
-    },
-  ];
-  const [activeSlide, setActiveSlide] = useState(0);
-  const touchStartX = useRef<number | null>(null);
-  const touchEndX = useRef<number | null>(null);
+const pillars = [
+  {
+    title: "Educate",
+    copy: "Scholarships, tuition support, school kits, and child clubs that keep students in school.",
+    image: "/assets/educate.jpg",
+    href: "/our-work/education-support",
+  },
+  {
+    title: "Nourish",
+    copy: "Daily mid-day meals that improve attendance, concentration, and classroom participation.",
+    image: "/assets/nourish.jpg",
+    href: "/our-work/midday-meals",
+  },
+  {
+    title: "Empower",
+    copy: "Women's self-help groups, savings circles, and skills training for household resilience.",
+    image: "/assets/empower.jpg",
+    href: "/our-work/financial-empowerment",
+  },
+];
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % slides.length);
-    }, 4500);
+const impactStats = [
+  { value: "730,000+", label: "meals served through mid-day meals" },
+  { value: "340+", label: "students supported by scholarships" },
+  { value: "80+", label: "women in active empowerment cohorts" },
+];
 
-    return () => clearInterval(timer);
-  }, [slides.length]);
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (prefersReducedMotion) {
-      gsap.set(
-        ".gsap-hero-eyebrow, .gsap-hero-title, .gsap-hero-copy, .gsap-hero-actions .btn, .gsap-hero-metrics .metric-card, .gsap-reveal",
-        { opacity: 1, y: 0, scale: 1 }
-      );
-      return;
-    }
-
-    const cleanupFns: Array<() => void> = [];
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".gsap-hero-eyebrow",
-        { y: isMobile ? 14 : 24 },
-        { y: 0, duration: isMobile ? 0.42 : 0.6, ease: "power3.out" }
-      );
-
-      gsap.fromTo(
-        ".gsap-hero-title",
-        { y: isMobile ? 20 : 36 },
-        {
-          y: 0,
-          duration: isMobile ? 0.6 : 0.9,
-          ease: "power3.out",
-          delay: isMobile ? 0.04 : 0.08,
-        }
-      );
-
-      gsap.fromTo(
-        ".gsap-hero-copy",
-        { y: isMobile ? 14 : 24 },
-        {
-          y: 0,
-          duration: isMobile ? 0.48 : 0.7,
-          ease: "power3.out",
-          delay: isMobile ? 0.1 : 0.16,
-        }
-      );
-
-      gsap.fromTo(
-        ".gsap-hero-actions .btn",
-        { y: isMobile ? 10 : 18 },
-        {
-          y: 0,
-          duration: isMobile ? 0.36 : 0.55,
-          ease: "power2.out",
-          delay: isMobile ? 0.14 : 0.22,
-          stagger: isMobile ? 0.05 : 0.08,
-        }
-      );
-
-      gsap.fromTo(
-        ".gsap-hero-metrics .metric-card",
-        { y: isMobile ? 10 : 18, scale: 0.98 },
-        {
-          y: 0,
-          scale: 1,
-          duration: isMobile ? 0.35 : 0.5,
-          ease: "power2.out",
-          delay: isMobile ? 0.18 : 0.28,
-          stagger: isMobile ? 0.04 : 0.07,
-        }
-      );
-
-      gsap.utils.toArray<HTMLElement>(".gsap-reveal").forEach((element) => {
-        gsap.fromTo(
-          element,
-          { y: isMobile ? 18 : 36 },
-          {
-            y: 0,
-            duration: isMobile ? 0.5 : 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: element,
-              start: isMobile ? "top 94%" : "top 86%",
-              toggleActions: "play none none none",
-            },
-          }
-        );
-      });
-
-      if (!isMobile) {
-        gsap.utils.toArray<HTMLElement>(".btn").forEach((button) => {
-        const onEnter = () => {
-          gsap.to(button, {
-            y: -3,
-            scale: 1.01,
-            duration: 0.22,
-            ease: "power2.out",
-            overwrite: "auto",
-          });
-        };
-        const onLeave = () => {
-          gsap.to(button, {
-            y: 0,
-            scale: 1,
-            duration: 0.24,
-            ease: "power2.out",
-            overwrite: "auto",
-          });
-        };
-
-        button.addEventListener("mouseenter", onEnter);
-        button.addEventListener("mouseleave", onLeave);
-        cleanupFns.push(() => {
-          button.removeEventListener("mouseenter", onEnter);
-          button.removeEventListener("mouseleave", onLeave);
-        });
-      });
-      }
-
-      if (!isMobile) {
-        gsap
-          .utils.toArray<HTMLElement>(".media-card, .default-card, .metric-card")
-          .forEach((card) => {
-          const setX = gsap.quickTo(card, "x", { duration: 0.25, ease: "power2.out" });
-          const setY = gsap.quickTo(card, "y", { duration: 0.25, ease: "power2.out" });
-          const setRotX = gsap.quickTo(card, "rotationX", {
-            duration: 0.25,
-            ease: "power2.out",
-          });
-          const setRotY = gsap.quickTo(card, "rotationY", {
-            duration: 0.25,
-            ease: "power2.out",
-          });
-
-          const onMove = (event: MouseEvent) => {
-            const rect = card.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            const dx = (event.clientX - centerX) / (rect.width / 2);
-            const dy = (event.clientY - centerY) / (rect.height / 2);
-
-            setX(dx * 4);
-            setY(dy * 4);
-            setRotX(-dy * 2);
-            setRotY(dx * 2);
-          };
-
-          const onLeave = () => {
-            setX(0);
-            setY(0);
-            setRotX(0);
-            setRotY(0);
-          };
-
-          card.addEventListener("mousemove", onMove);
-          card.addEventListener("mouseleave", onLeave);
-          cleanupFns.push(() => {
-            card.removeEventListener("mousemove", onMove);
-            card.removeEventListener("mouseleave", onLeave);
-          });
-        });
-      }
-    }, pageRef);
-
-    return () => {
-      cleanupFns.forEach((fn) => fn());
-      ctx.revert();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!pageRef.current) return;
-
-    const activeCaption = pageRef.current.querySelector(
-      ".slider-slide-active .slider-caption"
-    );
-    if (!activeCaption) return;
-
-    gsap.fromTo(
-      activeCaption,
-      { autoAlpha: 0, y: 14 },
-      { autoAlpha: 1, y: 0, duration: 0.45, ease: "power2.out" }
-    );
-  }, [activeSlide]);
-
-  const goToPrev = () => {
-    setActiveSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  const goToNext = () => {
-    setActiveSlide((prev) => (prev + 1) % slides.length);
-  };
-
-  const onTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
-    touchStartX.current = event.changedTouches[0]?.clientX ?? null;
-    touchEndX.current = null;
-  };
-
-  const onTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
-    touchEndX.current = event.changedTouches[0]?.clientX ?? null;
-  };
-
-  const onTouchEnd = () => {
-    if (touchStartX.current === null || touchEndX.current === null) return;
-    const delta = touchStartX.current - touchEndX.current;
-    const threshold = 45;
-
-    if (Math.abs(delta) < threshold) return;
-    if (delta > 0) {
-      goToNext();
-    } else {
-      goToPrev();
-    }
-  };
-
-  const steps = [
-    {
-      number: "01",
-      title: "Assess local baseline",
-      description:
-        "Start with school and community health mapping to identify nutrition, learning, and safety gaps.",
-    },
-    {
-      number: "02",
-      title: "Unify all field data",
-      description:
-        "Bring school records, meal logs, and scholarship outcomes into one transparent dashboard.",
-    },
-    {
-      number: "03",
-      title: "Build action protocol",
-      description:
-        "Create evidence-backed intervention plans for midday meals, scholarships, and women-led livelihoods.",
-    },
-    {
-      number: "04",
-      title: "Support and retest",
-      description:
-        "Deploy locally, measure impact quarterly, then refine with partners and community leaders.",
-    },
-  ];
-
-  const membershipItems = [
-    "School nutrition sponsorship tracking",
-    "Scholarship impact and student progression updates",
-    "Women empowerment program milestones",
-    "Field media reports and quarterly reviews",
-    "Partner helpdesk and rapid response coordination",
-    "Priority onboarding for volunteer and donor teams",
-  ];
-
+export default function HomePage() {
   return (
-    <main className="page-shell" ref={pageRef}>
-      <div className="promo-bar">
-        <div className="content-container promo-inner">
-          <p className="promo-text">
-            Support campaign: expand 3 districts before monsoon season.
-          </p>
-          <a href="#membership" className="promo-link">
-            Become a member
-          </a>
-        </div>
-      </div>
-
-      <section id="home" className="hero">
+    <main>
+      <section className="home-hero">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/assets/gallery-1.jpg"
-          alt="Community members in Nepal"
-          className="hero-media"
+          alt=""
+          className="home-hero__media"
+          fetchPriority="high"
         />
-        <div className="content-container hero-inner">
-          <p className="eyebrow gsap-hero-eyebrow">Health Intelligence for Communities</p>
-          <h1 className="hero-title gsap-hero-title">
-            Get better at building healthier communities, every year.
+        <div className="home-hero__scrim" />
+        <div className="container home-hero__inner">
+          <p className="home-hero__eyebrow">Non-profit · Nepal</p>
+          <h1 className="home-hero__title">
+            Nutrition, education, and dignity for communities in Sindhupalchowk.
           </h1>
-          <p className="hero-copy gsap-hero-copy">
-            A precise, data-informed social impact platform for nutrition,
-            education, and women empowerment across Nepal.
+          <p className="home-hero__desc">
+            Heart of Nepal runs practical, locally led programs—mid-day meals,
+            scholarships, school supplies, and women&apos;s savings groups—with
+            transparent reporting for partners and donors.
           </p>
-          <div className="button-row gsap-hero-actions">
-            <a href="#membership" className="btn btn-primary">
-              Become a member
-            </a>
-            <a href="#programs" className="btn btn-secondary">
-              See how it works
-            </a>
+          <div className="btn-row">
+            <Link href="/get-involved" className="btn btn--primary">
+              Support our work
+            </Link>
+            <Link href="/our-work" className="btn btn--outline-light">
+              View programs
+            </Link>
           </div>
-
-          <div className="hero-metrics gsap-hero-metrics">
-            <article className="metric-card">
-              <p className="metric-value">1,200+</p>
-              <p className="metric-label">children receiving daily meals</p>
-            </article>
-            <article className="metric-card">
-              <p className="metric-value">340+</p>
-              <p className="metric-label">students supported by scholarships</p>
-            </article>
-            <article className="metric-card">
-              <p className="metric-value">80+</p>
-              <p className="metric-label">women in empowerment cohorts</p>
-            </article>
-          </div>
+          <dl className="stat-row">
+            {impactStats.map((stat) => (
+              <div key={stat.label} className="stat-row__item">
+                <dt className="stat-row__value">{stat.value}</dt>
+                <dd className="stat-row__label">{stat.label}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
-      <section id="programs" className="section section-split gsap-reveal">
-        <div className="content-container">
-          <div className="split-grid">
+      <section className="section section--muted">
+        <div className="container">
+          <div className="split">
             <div>
-              <h2 className="section-heading">How it works</h2>
-              <p className="section-copy">
-                Inspired by world-class health product clarity, adapted for
-                social impact delivery in Nepal.
-              </p>
-              <div className="button-row mt-5">
-                <a href="/our-work" className="btn btn-secondary">
-                  Explore all programs
-                </a>
-                <a href="/impact" className="btn btn-ghost-light">
-                  View impact dashboard
-                </a>
+              <SectionBlock
+                title="How we work"
+                description="Programs are designed with schools, parent groups, and local partners—not imposed from outside. We start with what communities need, deliver consistently, and report outcomes openly."
+              />
+              <div className="btn-row">
+                <Link href="/our-work" className="btn btn--secondary">
+                  All programs
+                </Link>
+                <Link href="/impact" className="btn btn--ghost">
+                  Impact data
+                </Link>
               </div>
             </div>
-
-            <div className="steps-grid">
-              {steps.map((step) => (
-                <article key={step.number} className="default-card">
-                  <p className="step-index">{step.number}</p>
-                  <h3 className="card-title">{step.title}</h3>
-                  <p className="card-copy">{step.description}</p>
-                </article>
-              ))}
-            </div>
+            <ol className="process-list">
+              <li className="process-list__item">
+                <span className="process-list__step">01</span>
+                <div>
+                  <h3 className="card__title">Listen and assess</h3>
+                  <p className="card__text">
+                    Map nutrition gaps, school attendance, and household needs with
+                    teachers and community leaders.
+                  </p>
+                </div>
+              </li>
+              <li className="process-list__item">
+                <span className="process-list__step">02</span>
+                <div>
+                  <h3 className="card__title">Deliver on the ground</h3>
+                  <p className="card__text">
+                    Run meals, scholarships, kits, and women&apos;s groups with
+                    accountable local coordination.
+                  </p>
+                </div>
+              </li>
+              <li className="process-list__item">
+                <span className="process-list__step">03</span>
+                <div>
+                  <h3 className="card__title">Measure and adapt</h3>
+                  <p className="card__text">
+                    Track meals served, student progression, and group savings—then
+                    refine with partners each quarter.
+                  </p>
+                </div>
+              </li>
+            </ol>
           </div>
         </div>
       </section>
 
-      <section className="section gsap-reveal">
-        <div className="content-container split-grid why-grid">
+      <section className="section">
+        <div className="container split split--center">
           <div>
-            <h2 className="section-heading">Why we exist</h2>
-            <p className="section-copy">
-              Structural caste and gender inequalities still limit access to
-              nutrition, quality education, and financial independence for many
-              families in Nepal.
+            <SectionBlock
+              title="Why we exist"
+              description="Caste, gender, and economic barriers still limit access to nutrition, quality schooling, and financial independence for many families in rural Nepal."
+            />
+            <p className="prose">
+              Founded by youth leader Aishworya Shrestha, Heart of Nepal focuses on
+              practical interventions that communities can sustain—starting in
+              Sindhupalchowk and expanding with partner support.
             </p>
-            <p className="section-copy">
-              Heart of Nepal addresses these exclusions through practical,
-              evidence-backed local interventions.
-            </p>
+            <Link href="/about" className="text-link">
+              About our mission →
+            </Link>
           </div>
-          <div className="media-image-wrap">
+          <figure className="figure">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/assets/why-we-exist.jpg"
-              alt="Why Heart of Nepal exists"
-              className="media-image"
+              alt="Community members supported by Heart of Nepal"
+              className="figure__img"
             />
-          </div>
+          </figure>
         </div>
       </section>
 
-      <section className="section gsap-reveal">
-        <div className="content-container">
-          <h2 className="section-heading">Model of change</h2>
-          <p className="section-copy">
-            Three integrated pillars drive long-term community outcomes.
-          </p>
-          <div className="card-grid">
-            <article className="media-card">
-              <div className="media-image-wrap">
-                <img src="/assets/educate.jpg" alt="Educate pillar" className="media-image" />
-              </div>
-              <h3 className="card-title mt-4">Educate</h3>
-              <p className="card-copy">Scholarships, tuition support, and school continuity pathways.</p>
-              <a href="/our-work/education-support" className="btn btn-secondary mt-4">
-                Open education support
-              </a>
-            </article>
-            <article className="media-card">
-              <div className="media-image-wrap">
-                <img src="/assets/nourish.jpg" alt="Nourish pillar" className="media-image" />
-              </div>
-              <h3 className="card-title mt-4">Nourish</h3>
-              <p className="card-copy">Mid-day meal implementation to improve attendance and learning.</p>
-              <a href="/our-work/midday-meals" className="btn btn-secondary mt-4">
-                Open mid-day meals
-              </a>
-            </article>
-            <article className="media-card">
-              <div className="media-image-wrap">
-                <img src="/assets/empower.jpg" alt="Empower pillar" className="media-image" />
-              </div>
-              <h3 className="card-title mt-4">Empower</h3>
-              <p className="card-copy">Women-led savings groups and household resilience pathways.</p>
-              <a href="/our-work/financial-empowerment" className="btn btn-secondary mt-4">
-                Open empowerment work
-              </a>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="stories" className="section gsap-reveal">
-        <div className="content-container media-section">
-          <article className="media-card">
-            <div className="media-image-wrap">
-              <img
-                src="/assets/midday-2.jpg"
-                alt="Midday meal program in a school"
-                className="media-image"
-              />
-            </div>
-            <h3 className="card-title mt-4">Nutrition at Scale</h3>
-            <p className="card-copy">
-              Mid-day Meals has served 730,000+ meals and remains a primary
-              intervention for attendance and concentration.
-            </p>
-            <div className="button-row mt-4">
-              <a href="/impact" className="btn btn-ghost-light">
-                View impact report
-              </a>
-              <a href="/our-work/midday-meals" className="btn btn-secondary">
-                Program details
-              </a>
-            </div>
-          </article>
-          <article className="media-card">
-            <div className="media-image-wrap">
-              <img
-                src="/assets/financial-2.jpg"
-                alt="Women participating in empowerment training"
-                className="media-image"
-              />
-            </div>
-            <h3 className="card-title mt-4">Women-Led Change</h3>
-            <p className="card-copy">
-              Women&apos;s self-help groups are tracked through recurring
-              savings and participation dashboards in the impact view.
-            </p>
-            <div className="button-row mt-4">
-              <a href="/stories" className="btn btn-ghost-light">
-                Read full story
-              </a>
-              <a href="/our-work/financial-empowerment" className="btn btn-secondary">
-                Program details
-              </a>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section className="section gallery-section gsap-reveal">
-        <div className="content-container">
-          <h2 className="section-heading">Moments from the field</h2>
-          <p className="section-copy">
-            Stories captured through our education, nutrition, and empowerment
-            initiatives across Nepal.
-          </p>
-
-          <div className="slider-shell">
-            <div
-              className="slider-viewport"
-              onTouchStart={onTouchStart}
-              onTouchMove={onTouchMove}
-              onTouchEnd={onTouchEnd}
-            >
-              {slides.map((slide, index) => (
-                <figure
-                  key={slide.src}
-                  className={`slider-slide ${
-                    index === activeSlide ? "slider-slide-active" : ""
-                  }`}
-                >
-                  <img src={slide.src} alt={slide.alt} className="slider-image" />
-                  <figcaption className="slider-caption">{slide.caption}</figcaption>
+      <section className="section section--muted">
+        <div className="container">
+          <SectionBlock
+            title="Three pillars of change"
+            description="Education, nutrition, and women's economic agency reinforce one another across our portfolio."
+          />
+          <div className="card-grid card-grid--3">
+            {pillars.map((pillar) => (
+              <article key={pillar.title} className="card card--media">
+                <figure className="figure figure--card">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={pillar.image} alt="" className="figure__img" />
                 </figure>
-              ))}
-            </div>
-
-            <div className="slider-controls">
-              <button
-                type="button"
-                aria-label="Previous slide"
-                className="slider-arrow"
-                onClick={goToPrev}
-              >
-                ‹
-              </button>
-              <div className="slider-dots">
-                {slides.map((slide, index) => (
-                  <button
-                    key={`${slide.src}-dot`}
-                    type="button"
-                    aria-label={`Go to slide ${index + 1}`}
-                    className={`slider-dot ${
-                      index === activeSlide ? "slider-dot-active" : ""
-                    }`}
-                    onClick={() => setActiveSlide(index)}
-                  />
-                ))}
-              </div>
-              <button
-                type="button"
-                aria-label="Next slide"
-                className="slider-arrow"
-                onClick={goToNext}
-              >
-                ›
-              </button>
-            </div>
+                <h3 className="card__title">{pillar.title}</h3>
+                <p className="card__text">{pillar.copy}</p>
+                <Link href={pillar.href} className="text-link">
+                  Learn more →
+                </Link>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      <section id="membership" className="section gsap-reveal">
-        <div className="content-container">
-          <h2 className="section-heading">Membership details</h2>
-          <p className="section-copy">
-            Your membership includes practical tools and transparent updates,
-            designed for donors, volunteers, and partners.
-          </p>
-          <div className="membership-layout">
-            <div className="membership-card">
-              <p className="membership-meta">MEMBERSHIP / COMMUNITY INTELLIGENCE</p>
-              <h3 className="mt-2 text-[30px] font-bold leading-[1.2] tracking-[-0.338px] text-[#18181b]">
-                Build a healthier future with one focused contribution.
+      <section className="section">
+        <div className="container">
+          <div className="card-grid card-grid--2">
+            <article className="card card--horizontal">
+              <figure className="figure figure--wide">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/assets/midday-2.jpg"
+                  alt="Mid-day meal service at a school"
+                  className="figure__img"
+                />
+              </figure>
+              <div className="card__body">
+                <h3 className="card__title">Mid-day meals at scale</h3>
+                <p className="card__text">
+                  Our largest program has served more than 730,000 meals, helping
+                  students stay in school with reliable daily nutrition.
+                </p>
+                <div className="btn-row">
+                  <Link href="/our-work/midday-meals" className="btn btn--secondary">
+                    Program page
+                  </Link>
+                  <Link href="/impact" className="btn btn--ghost">
+                    See impact
+                  </Link>
+                </div>
+              </div>
+            </article>
+            <article className="card card--horizontal">
+              <figure className="figure figure--wide">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/assets/financial-2.jpg"
+                  alt="Women in an empowerment program"
+                  className="figure__img"
+                />
+              </figure>
+              <div className="card__body">
+                <h3 className="card__title">Women-led savings groups</h3>
+                <p className="card__text">
+                  Mother&apos;s groups in Pipaltar and Battar build household
+                  resilience through structured savings and skills training.
+                </p>
+                <div className="btn-row">
+                  <Link
+                    href="/our-work/financial-empowerment"
+                    className="btn btn--secondary"
+                  >
+                    Program page
+                  </Link>
+                  <Link href="/stories" className="btn btn--ghost">
+                    Read stories
+                  </Link>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--border">
+        <div className="container">
+          <SectionBlock
+            title="From the field"
+            description="Photographs from schools, meal services, and women's groups across our program areas."
+          />
+          <ImageSlider slides={slides} />
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <SectionBlock
+            title="Ways to contribute"
+            description="Donors and volunteers receive clear updates on meals delivered, students supported, and group milestones—not marketing fluff."
+          />
+          <div className="split">
+            <div className="donate-panel">
+              <p className="donate-panel__label">Partner with us</p>
+              <h3 className="donate-panel__title">
+                Fund a school year of meals, a scholarship, or a women&apos;s cohort.
               </h3>
-              <p className="mt-2 max-w-[65ch] text-[#18181b]">
-                Primary members receive quarterly impact reviews, on-ground
-                project updates, and invitations to partner-led sessions.
+              <p className="donate-panel__text">
+                We welcome one-time gifts, recurring support, and in-kind
+                contributions aligned with program needs.
               </p>
-              <div className="button-row mt-5">
-                <a href="/get-involved" className="btn btn-primary">
-                  Become a Member
-                </a>
-                <a href="/get-involved" className="btn btn-secondary">
-                  Schedule a Call
-                </a>
+              <div className="btn-row">
+                <Link href="/get-involved" className="btn btn--primary">
+                  Get involved
+                </Link>
+                <Link href="/impact" className="btn btn--outline-dark">
+                  Review impact
+                </Link>
               </div>
             </div>
-
-            <aside className="default-card">
-              <h3 className="card-title">Your membership includes</h3>
-              <ul className="include-list">
-                {membershipItems.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
+            <aside className="card">
+              <h3 className="card__title">What partners receive</h3>
+              <ul className="check-list">
+                <li>Quarterly program summaries with key metrics</li>
+                <li>Field photos and short narrative updates</li>
+                <li>Direct line to our coordination team in Lalitpur</li>
+                <li>Visibility into meal, scholarship, and savings outcomes</li>
               </ul>
-              <a href="/get-involved" className="btn btn-primary w-full mt-3">
-                Get started
-              </a>
             </aside>
           </div>
         </div>
       </section>
 
-      <section className="section testimonials gsap-reveal">
-        <div className="content-container">
-          <h2 className="section-heading">
-            Verified impact highlights
-          </h2>
-          <p className="section-copy">
-            Grounded in implementation data from active field programs.
+      <section className="section section--cta">
+        <div className="container container--narrow">
+          <h2 className="section-block__title">Help us reach more students and families</h2>
+          <p className="section-block__desc">
+            Whether you donate, volunteer, or connect us with a school partner, your
+            support expands evidence-backed work on the ground.
           </p>
-          <div className="card-grid mt-7">
-            <article className="default-card">
-              <p className="quote">730,000+ meals served through school nutrition delivery.</p>
-              <p className="quote-meta">Program: Mid-day Meals</p>
-            </article>
-            <article className="default-card">
-              <p className="quote">Five integrated programs operate across education, nutrition, and empowerment.</p>
-              <p className="quote-meta">Portfolio coverage</p>
-            </article>
-            <article className="default-card">
-              <p className="quote">Pipaltar and Battar mother&apos;s groups are actively tracked in the impact dashboard.</p>
-              <p className="quote-meta">Women&apos;s savings governance</p>
-            </article>
+          <div className="btn-row btn-row--center">
+            <Link href="/get-involved" className="btn btn--primary">
+              Contact the team
+            </Link>
+            <Link href="/about" className="btn btn--secondary">
+              Meet our founder
+            </Link>
           </div>
         </div>
       </section>
-
-      <section id="contact" className="section section-final gsap-reveal">
-        <div className="content-container final-cta">
-          <h2 className="section-heading">Your contribution starts here</h2>
-          <p className="section-copy">
-            Partner with Heart of Nepal to expand evidence-backed programs in
-            nutrition, education, and women empowerment.
-          </p>
-          <div className="button-row mt-5">
-            <a href="/get-involved" className="btn btn-primary">
-              Contact Team
-            </a>
-            <a href="/about" className="btn btn-secondary">
-              Learn about our team
-            </a>
-          </div>
-        </div>
-      </section>
-
     </main>
   );
 }
